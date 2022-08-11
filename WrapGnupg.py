@@ -27,8 +27,10 @@ def initialize(name_txt, email_txt, passphrase_txt, comment_txt):
                                    subkey_length=SUBKEY_LENGTH,
                                    expire_date=EXPIRE_DATE)
 
-    key = gpg.gen_key(key_input)
-    return
+    key = list_private_keys(email_txt)
+    if not key:
+        key = gpg.gen_key(key_input)
+    return key
 
 def export_key(keyname, passphrase_txt, file_out):
     with open(file_out, 'wb') as f:
@@ -52,7 +54,9 @@ def delete_public_key(keyname, passphrase):
         gpg.delete_keys(fps['fingerprint'], passphrase=passphrase,  expect_passphrase = False)
     return True
 
-def list_private_keys():
+def list_private_keys(keyname):
+    if keyname:
+        return gpg.list_keys(True, keys=keyname)
     return gpg.list_keys(True)
 
 def encrypt_file(recipient, file_in):
@@ -96,6 +100,6 @@ def main():
     NAME_EMAIL = 'blah11@blah.com'
     NAME_COMMENT = 'this 12 a longish comment'
     PASS_PHRASE = 'imaG00Done'
-    initialize(NAME, NAME_EMAIL, PASS_PHRASE, NAME_COMMENT)
+    key = initialize(NAME, NAME_EMAIL, PASS_PHRASE, NAME_COMMENT)
 
 main()
