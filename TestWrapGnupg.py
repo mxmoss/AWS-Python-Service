@@ -1,4 +1,5 @@
 import unittest
+import os
 from WrapGnupg import *
 
 SENDER_NAME = 'Marv Drake'
@@ -11,10 +12,10 @@ RECIPIENT_EMAIL = 'barfy@blah.com'
 RECIPIENT_COMMENT = 'comment for '+RECIPIENT_NAME
 RECIPIENT_PASSPHRASE = 'imaG00Done'
 
-IMPORT_KEY_FILE = 'C:/develop/python/gpg/foo2.txt'
-EXPORT_KEY_FILE = 'C:/develop/python/gpg/keyout.txt'
-PLAINTEXT_FILE = 'C:/develop/python/gpg/plaintext.txt'
-ENCRYPTED_FILE = 'C:/develop/python/gpg/plaintext2.txt'
+IMPORT_KEY_FILE = 'C:/develop/python/vsgLicense/foo2.txt'
+EXPORT_KEY_FILE = 'C:/develop/python/vsgLicense/keyout.txt'
+PLAINTEXT_FILE = 'C:/develop/python/vsgLicense/plaintext.txt'
+ENCRYPTED_FILE = 'C:/develop/python/vsgLicense/plaintext2.txt'
 
 
 class MyTestCase(unittest.TestCase):
@@ -30,11 +31,15 @@ class MyTestCase(unittest.TestCase):
     def test_delete_public_key(self):
         self.assertEqual(delete_public_key(RECIPIENT_EMAIL, SENDER_PASSPHRASE), True)  # add assertion here
 
-    def test_list_private_keys(self):
+    def test_list_private_keys(self, SENDER_EMAIL):
         self.assertEqual(list_private_keys().__len__() >0, True)  # add assertion here
 
     def test_encrypt_file(self):
+        f = open(PLAINTEXT_FILE, "w")
+        f.write("This is a bunch of plain text to use for testing")
+        f.close()
         self.assertEqual(encrypt_file(RECIPIENT_EMAIL, PLAINTEXT_FILE).ok, True)  # add assertion here
+        os.remove(PLAINTEXT_FILE)
 
     def test_encrypt_and_sign_file(self):
         self.assertEqual(encrypt_and_sign_file(SENDER_EMAIL, SENDER_PASSPHRASE, 'C:/develop/python/gpg/plaintext2.txt').ok, True)  # add assertion here
