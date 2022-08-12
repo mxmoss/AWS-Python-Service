@@ -17,6 +17,10 @@ RECIPIENT_EMAIL = 'cleesej@montypython.org'
 RECIPIENT_COMMENT = 'funny, hahah'
 RECIPIENT_PASSPHRASE = 'theCheeseSketch'
 
+def validateMyKey(key):
+	if key != '':
+		return list_public_keys(key)
+
 def Main():
     #encrypt with recipient's public key and sign with my private passphrase
     encrypt_and_sign_file(RECIPIENT_NAME, MY_PRIVATE_PASSPHRASE, 'C:\develop\python\gpg\TopSecretJoke3.txt')

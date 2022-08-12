@@ -1,13 +1,9 @@
 from flask import Flask, request
 
 import WrapGnupg
-from WrapGnupg import *
+import checklicense
 
 app = Flask(__name__)
-
-def validateMyKey(key):
-	if key != '':
-		return list_public_keys(key)
 
 @app.route('/')
 def hello_world():
