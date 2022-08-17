@@ -2,27 +2,27 @@ from WrapGnupg import *
 import os
 
 class KeyLock:
-  locks = []
-  def KeyFile(self):
-    return os.getcwd()+'\locks.txt'
+    locks = []
+    def KeyFile(self):
+        return os.getcwd()+'\locks.txt'
 
-  #add a key to the list
-  def AddKey(self, key):
-    self.locks.append(key)
-    print(self.locks)
-    with open(self.KeyFile() , 'w') as f:
-      for i in self.locks:
-        f.write('{}\n'.format(i))
-      f.close
+    def writeLocks(self):
+        with open(self.KeyFile() , 'w') as f:
+            for i in self.locks:
+                f.write('{}\n'.format(i))
+            f.close
 
-  #remove a key from the list
-  def RemoveKey(self, key):
-    self.locks.remove(key)
-    #write file
-    with open(self.KeyFile() , 'w') as f:
-      for i in self.locks:
-        f.write('{}\n'.format(i))
-      f.close
+    #add a key to the list
+    def AddKey(self, key):
+        self.locks.append(key)
+        self.writeLocks()
+        return True
+
+    #remove a key from the list
+    def RemoveKey(self, key):
+        self.locks.remove(key)
+        self.writeLocks()
+        return True
 
 #sender - encrypts file with VSG public key and signs with their own private key
 #recipient - is VSG. We decrypt and verify signature.
@@ -41,22 +41,19 @@ RECIPIENT_EMAIL = 'cleesej@montypython.org'
 RECIPIENT_COMMENT = 'funny, hahah'
 RECIPIENT_PASSPHRASE = 'theCheeseSketch'
 
-def checkoutMyKey(key):
+def checkoutMyKey(key, action):
     if key != '':
         fp = list_public_keys(key)
     if fp:
         loks = KeyLock()
-        return loks.AddKey(fp.fingerprints)
+        if action == 'checkout':
+            return loks.AddKey(fp.fingerprints)
+        if action == 'checkin':
+            return loks.RemoveKey(fp.fingerprints)
+    return False
 
-def checkinMyKey(key):
-    if key != '':
-        fp = list_public_keys(key)
-    if fp:
-        loks = KeyLock()
-        return loks.RemoveKey(fp.fingerprints)
-
-def Main():
-    checkoutMyKey(SENDER_EMAIL)
+#def Main():
+#    checkoutMyKey(SENDER_EMAIL, 'checkout')
 
     #encrypt with recipient's public key and sign with my private passphrase
 #    encrypt_and_sign_file(RECIPIENT_NAME, MY_PRIVATE_PASSPHRASE, 'C:\develop\python\gpg\TopSecretJoke3.txt')
@@ -64,6 +61,4 @@ def Main():
     #as the recipient, decrypt with my private passphrase. Will not decrypt if sig not right.
 #    verify_and_decrypt_file(RECIPIENT_PASSPHRASE, 'C:\develop\python\gpg\TopSecretJoke3.txt')
 
-
-
-Main()
+#Main()
