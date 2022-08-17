@@ -14,12 +14,30 @@ def init_keys():
 	WrapGnupg.main()
 	return 'good!'
 
+@app.route('/checkout-key/', methods = ['GET', 'POST'])
+def checkout_keys():
+	my_key = request.args.get('key_id')
+#	my_val = validateMyKey(my_key)
+	if len(my_key) > 0:
+		checklicense.checkoutMyKey(my_key)
+		return 'checked out!'
+	return 'not so good'
+
+@app.route('/checkin-key/', methods = ['GET', 'POST'])
+def checkin_keys():
+	my_key = request.args.get('key_id')
+#	my_val = validateMyKey(my_key)
+	if len(my_key) > 0:
+		checklicense.checkinMyKey(my_key)
+		return 'checked in!'
+	return 'not so good'
+
 @app.route('/keys/', methods = ['GET', 'POST', 'DELETE'])
 def key():
 	retStr = ''
 	if request.method == 'GET':
 		my_key = request.args.get('key_id')
-		my_val = validateMyKey(my_key)
+#		my_val = validateMyKey(my_key)
 		if len(my_val)>0:
 			retStr = 'VERIFIED'
 		else:
