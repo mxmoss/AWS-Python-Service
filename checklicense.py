@@ -30,17 +30,7 @@ class KeyLock:
 #if ok, then return OK
 #if not ok, return NO
 
-SENDER_NAME = 'Benny Hill'
-SENDER_EMAIL = 'benny.hill@bbc.com'
-SENDER_COMMENT = ''
-SENDER_PASSPHRASE = 'yakitysax'
-MY_PRIVATE_PASSPHRASE = 'asdfasdf'
-
-RECIPIENT_NAME = 'John Cleese'
-RECIPIENT_EMAIL = 'cleesej@montypython.org'
-RECIPIENT_COMMENT = 'funny, hahah'
-RECIPIENT_PASSPHRASE = 'theCheeseSketch'
-
+# eg:  checkoutMyKey(SENDER_EMAIL, 'checkout')
 def checkoutMyKey(key, action):
     if key != '':
         fp = list_public_keys(key)
@@ -52,13 +42,18 @@ def checkoutMyKey(key, action):
             return loks.RemoveKey(fp.fingerprints)
     return False
 
-#def Main():
-#    checkoutMyKey(SENDER_EMAIL, 'checkout')
+    SENDER_NAME = 'Benny Hill'
+    SENDER_EMAIL = 'benny.hill@bbc.com'
+    SENDER_COMMENT = ''
+    SENDER_PASSPHRASE = 'yakitysax'
+    MY_PRIVATE_PASSPHRASE = 'asdfasdf'
 
+    RECIPIENT_NAME = 'John Cleese'
+    RECIPIENT_EMAIL = 'cleesej@montypython.org'
+    RECIPIENT_COMMENT = 'funny, hahah'
+    RECIPIENT_PASSPHRASE = 'theCheeseSketch'
     #encrypt with recipient's public key and sign with my private passphrase
 #    encrypt_and_sign_file(RECIPIENT_NAME, MY_PRIVATE_PASSPHRASE, 'C:\develop\python\gpg\TopSecretJoke3.txt')
 
     #as the recipient, decrypt with my private passphrase. Will not decrypt if sig not right.
 #    verify_and_decrypt_file(RECIPIENT_PASSPHRASE, 'C:\develop\python\gpg\TopSecretJoke3.txt')
-
-#Main()
