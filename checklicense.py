@@ -37,7 +37,10 @@ def checkoutMyKey(key, action):
     if fp:
         loks = KeyLock()
         if action == 'checkout':
-            return loks.AddKey(fp.fingerprints)
+            if fp.fingerprints in loks.locks:
+                return False
+            else:
+                return loks.AddKey(fp.fingerprints)
         if action == 'checkin':
             return loks.RemoveKey(fp.fingerprints)
     return False
