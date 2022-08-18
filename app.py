@@ -9,6 +9,16 @@ app = Flask(__name__)
 def hello_world():
 	return 'Hello from Flask!'
 
+@app.route('/load/', methods = ['GET', 'POST'])
+def load():
+	checklicense.loadMyKeys()
+	return 'good!'
+
+@app.route('/reset/', methods = ['GET', 'POST'])
+def reset():
+	checklicense.resetMyKeys()
+	return 'good!'
+
 @app.route('/init-keys/', methods = ['GET', 'POST'])
 def init_keys():
 	WrapGnupg.main()

@@ -12,6 +12,19 @@ class KeyLock:
                 f.write('{}\n'.format(i))
             f.close
 
+    #reload existing keys from file
+    def Load(self):
+        with open(self.KeyFile() , 'r') as f:
+            locks = f.read().split()
+            f.close
+
+    #Reset lock file
+    def Reset(self):
+        with open(self.KeyFile() , 'w') as f:
+            f.write('\n')
+            f.close
+        self.Load()
+
     #add a key to the list
     def AddKey(self, key):
         self.locks.append(key)
@@ -23,12 +36,6 @@ class KeyLock:
         self.locks.remove(key)
         self.writeLocks()
         return True
-
-#sender - encrypts file with VSG public key and signs with their own private key
-#recipient - is VSG. We decrypt and verify signature.
-#recipient then checks contents of the license file to see which license to check out.
-#if ok, then return OK
-#if not ok, return NO
 
 # eg:  checkoutMyKey(SENDER_EMAIL, 'checkout')
 def checkoutMyKey(key, action):
@@ -44,6 +51,22 @@ def checkoutMyKey(key, action):
         if action == 'checkin':
             return loks.RemoveKey(fp.fingerprints)
     return False
+
+def loadMyKeys():
+    loks = KeyLock()
+    loks.Load()
+    print(loks)
+
+def resetMyKeys():
+    loks = KeyLock()
+    loks.Reset()
+    print(loks)
+
+    # sender - encrypts file with VSG public key and signs with their own private key
+    # recipient - is VSG. We decrypt and verify signature.
+    # recipient then checks contents of the license file to see which license to check out.
+    # if ok, then return OK
+    # if not ok, return NO
 
     SENDER_NAME = 'Benny Hill'
     SENDER_EMAIL = 'benny.hill@bbc.com'
