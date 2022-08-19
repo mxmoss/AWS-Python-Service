@@ -42,16 +42,17 @@ def checkout_keys():
 def key():
 	retStr = ''
 	if request.method == 'GET':
-		my_key = request.args.get('key_id')
-#		my_val = validateMyKey(my_key)
+		a_key = request.args.get('key_id')
+		my_val = checklicense.checkKey(a_key)
 		if len(my_val)>0:
 			retStr = 'VERIFIED'
 		else:
 			retStr =  'UNKNOWN'
 
 	elif request.method == 'POST':
-		my_key = request.form.get('key_id') # a multidict containing POST data
-		if validateMyKey(my_key):
+		a_key = request.form.get('key_id') # a multidict containing POST data
+		my_val = checklicense.checkKey(a_key)
+		if len(my_val) >0:
 			retStr = 'VERIFIED'
 		else:
 			retStr =  'UNKNOWN'
