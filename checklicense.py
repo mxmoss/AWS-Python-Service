@@ -62,6 +62,20 @@ def resetMyKeys():
     loks.Reset()
     print(loks)
 
+def checkKey(recipient):
+    MY_PRIVATE_PASSPHRASE = 'imaG00Done' #'fizzbuzz'
+    testFile =os.getcwd() + '\checkkey.txt'
+    with open(testFile, 'w') as f:
+        f.write('fuzzy wuzzy was a bunny\n')
+        f.close
+
+    result = encrypt_and_sign_file(recipient, MY_PRIVATE_PASSPHRASE, testFile)
+    os.remove(testFile)
+    os.remove(testFile+'.gpg')
+    return result
+
+#    verify_and_decrypt_file(RECIPIENT_PASSPHRASE, 'C:\develop\python\gpg\TopSecretJoke3.txt')
+
     # sender - encrypts file with VSG public key and signs with their own private key
     # recipient - is VSG. We decrypt and verify signature.
     # recipient then checks contents of the license file to see which license to check out.
@@ -71,8 +85,7 @@ def resetMyKeys():
     SENDER_NAME = 'Benny Hill'
     SENDER_EMAIL = 'benny.hill@bbc.com'
     SENDER_COMMENT = ''
-    SENDER_PASSPHRASE = 'yakitysax'
-    MY_PRIVATE_PASSPHRASE = 'asdfasdf'
+    SENDER_PASSPHRASE = 'yakitysax' #fizzbuzz
 
     RECIPIENT_NAME = 'John Cleese'
     RECIPIENT_EMAIL = 'cleesej@montypython.org'
