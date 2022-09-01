@@ -44,7 +44,7 @@ def key():
 	if request.method == 'GET':
 		a_key = request.args.get('key_id')
 		my_val = checklicense.checkKey(a_key)
-		if len(my_val)>0:
+		if my_val.ok:
 			retStr = 'VERIFIED'
 		else:
 			retStr =  'UNKNOWN'
@@ -52,7 +52,7 @@ def key():
 	elif request.method == 'POST':
 		a_key = request.form.get('key_id') # a multidict containing POST data
 		my_val = checklicense.checkKey(a_key)
-		if len(my_val) >0:
+		if my_val.ok:
 			retStr = 'VERIFIED'
 		else:
 			retStr =  'UNKNOWN'
