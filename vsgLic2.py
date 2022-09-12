@@ -16,7 +16,7 @@ class VsgLicense:
 
     @staticmethod
     def validate(customer, secret_id):
-        if customer[0].get("id") == secret_id:
+        if customer[0].get("secret_id") == secret_id:
             return True
         return False
 
