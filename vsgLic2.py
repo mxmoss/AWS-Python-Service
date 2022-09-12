@@ -1,26 +1,32 @@
 import json
 
-class vsgLicense:
+class VsgLicense:
 #    def __init__(self, sn):
 #        self.sn = sn
 
-    def get_customer(self, sn):
+    @staticmethod
+    def get_customer(sn):
         # Search for customer
         with open('custs.json') as json_file:
             customers = json.load(json_file)
             customer = customers.get(sn)
-            return customer
+            if customer:
+                return customer
+            return []
 
-    def validate(self, customer, secret_id):
+    @staticmethod
+    def validate(customer, secret_id):
         if customer[0].get("id") == secret_id:
             return True
         return False
 
-    def load_file(self):
+    @staticmethod
+    def load_file():
         with open('custs.json') as json_file:
             return json.load(json_file)
 
-    def save_file(self, customers):
+    @staticmethod
+    def save_file(customers):
         with open('custs.json', 'w') as f:
             json.dump(customers, f)
         return customers
@@ -63,8 +69,8 @@ class vsgLicense:
         #TBD??
         return
 
-def Main():
-    vsg = vsgLicense()
+def main():
+    vsg = VsgLicense()
     #given a customer id and a "secret id", verify the customer then return the license info
     #we can also include the machine name / ip address in this process if we want
     customer = vsg.get_customer("1234")
@@ -81,4 +87,4 @@ def Main():
     vsg.delete("9090")
 
 
-Main()
+main()
