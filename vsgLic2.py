@@ -1,25 +1,8 @@
 import json
 
-
 class VsgLicense:
-    #    def __init__(self, sn):
-    #        self.sn = sn
-
-    @staticmethod
-    def get_customer(customer_id):
-        # Search for customer
-        with open('custs.json') as json_file:
-            customers = json.load(json_file)
-            customer = customers.get(customer_id)
-            if customer:
-                return customer
-            return []
-
-    @staticmethod
-    def validate(customer, secret_id):
-        if customer and customer['secret_id'] == secret_id:
-            return True
-        return False
+#    def __init__(self, sn):
+#           self.sn = sn
 
     @staticmethod
     def load_file():
@@ -33,7 +16,23 @@ class VsgLicense:
         return customers
 
     @staticmethod
-    def cust_rec(cust_id, secret_id='0000', ver='2.01',
+    def get_customer( customer_id):
+        # Search for customer
+        with open('custs.json') as json_file:
+            customers = json.load(json_file)
+            customer = customers.get(customer_id)
+            if customer:
+                return customer
+            return []
+
+    def validate(self, customer_id, secret_id):
+        customer = self.get_customer(customer_id)[0]
+        if customer_id and customer['secret_id'] == secret_id:
+            return True
+        return False
+
+    @staticmethod
+    def cust_rec( cust_id, secret_id='0000', ver='2.01',
                  lease_dt='2023-01-01', temp_dt='2022-12-01',
                  dante_yn='Y', dante_lic='0000', sslo_yn='1', sslo_lic='0000',
                  general=[0, 0, 0, 0], replay=[0, 0, 0, 0], studio=[0, 0, 0, 0], review=[0, 0, 0, 0]):
@@ -54,7 +53,7 @@ class VsgLicense:
         }
 
     def add(self, customer):
-        newcust = self.cust_rec(customer)
+        newcust = self.cust_rec(cust_id = customer)
         customers = self.load_file()
         customers[customer] = newcust
         self.save_file(customers)
@@ -84,26 +83,3 @@ class VsgLicense:
         customer['in_use'] = 'N'
         self.update(customer)
 
-
-def main():
-    vsg = VsgLicense()
-    # given a customer id and a "secret id", verify the customer then return the license info
-    # we can also include the machine name / ip address in this process if we want
-    vsg.add("9090")
-
-    customer = vsg.get_customer("9090")
-    if not customer:
-        exit()
-
-    if vsg.validate(customer, "19090"):
-        print(customer)
-
-    customer['dante_lic'] = '23452345'
-    vsg.update(customer)
-
-    vsg.check_out(customer)
-    vsg.check_in(customer)
-
-    vsg.delete("9090")
-
-main()
