@@ -16,7 +16,7 @@ class VsgLicense:
 
     @staticmethod
     def validate(customer, secret_id):
-        if customer[0].get("secret_id") == secret_id:
+        if customer and customer['secret_id'] == secret_id:
             return True
         return False
 
@@ -34,7 +34,7 @@ class VsgLicense:
     def add(self, customer):
         newcust = {
             'sn': customer,
-            'id': '19090',
+            'secret_id': '19090',
             'ver': '2.01',
             'lease': '2023-01-01',
             'temp': '2022-12-01',
@@ -55,7 +55,7 @@ class VsgLicense:
 
     def update(self, customer):
         customers = self.load_file()
-        customers[customer[0]['sn']] = customer
+        customers[customer['sn']] = customer
         self.save_file(customers)
         return customers
 
@@ -73,18 +73,18 @@ def main():
     vsg = VsgLicense()
     #given a customer id and a "secret id", verify the customer then return the license info
     #we can also include the machine name / ip address in this process if we want
-    customer = vsg.get_customer("1234")
+    vsg.add("9090")
+
+    customer = vsg.get_customer("9090")
     if not customer:
         exit()
 
-    customer[0]['dante_lic'] = '23452345'
+    if vsg.validate(customer,"19090"):
+        print(customer)
+
+    customer['dante_lic'] = '23452345'
     vsg.update(customer)
 
-    if vsg.validate(customer,"5544"):
-        print(customer)
-    vsg.add("9090")
-
     vsg.delete("9090")
-
 
 main()
