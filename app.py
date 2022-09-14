@@ -26,8 +26,6 @@ def checkout_keys():
 	action = request.args.get('action')
 	pwd = request.args.get('pwd')
 	secret_key = request.args.get('secret')
-#	txt1 = "key_id {key_id}, action {action}, pwd {pwd}, secret_key {secret_key}".format(key_id = key_id, action = action, pwd = pwd, secret_key = secret_key)
-#	return txt1
 
 	vsg = VsgLicense()
 	if key_id:
@@ -40,7 +38,7 @@ def checkout_keys():
 				return 'checked in!'
 		if action == 'validate':
 			if secret_key and vsg.validate(key_id, secret_key):
-				return 'valid!'
+				return vsg.get_customer(key_id)[0]
 	return 'not so good'
 
 if __name__ == '__main__':
