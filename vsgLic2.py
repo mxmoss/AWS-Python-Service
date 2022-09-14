@@ -5,11 +5,11 @@ class VsgLicense:
 #        self.sn = sn
 
     @staticmethod
-    def get_customer(sn):
+    def get_customer(customer_id):
         # Search for customer
         with open('custs.json') as json_file:
             customers = json.load(json_file)
-            customer = customers.get(sn)
+            customer = customers.get(customer_id)
             if customer:
                 return customer
             return []
@@ -31,23 +31,28 @@ class VsgLicense:
             json.dump(customers, f)
         return customers
 
-    def add(self, customer):
-        newcust = {
-            'sn': customer,
-            'secret_id': '19090',
-            'ver': '2.01',
-            'lease': '2023-01-01',
-            'temp': '2022-12-01',
-            'dante': 'Y',
-            'dante_lic': '3465',
-            'sslo': '1',
-            'sslo_lic': '4567',
-            'general': [1, 2, 3, 4],
-            'replay': [0, 0, 0, 0],
-            'studio': [4, 3, 2, 1],
-            'review': [0, 0, 0, 0]
-       }
+    def cust_rec(self, cust_id, secret_id= '0000', ver='2.01',
+                 lease_dt='2023-01-01', temp_dt='2022-12-01',
+                 dante_yn='Y', dante_lic='0000', sslo_yn='1', sslo_lic='0000',
+                 general = [0,0,0,0], replay = [0,0,0,0], studio = [0,0,0,0], review = [0,0,0,0]):
+        return  {
+            'sn': cust_id,
+            'secret_id': secret_id,
+            'ver': ver,
+            'lease': lease_dt,
+            'temp': temp_dt,
+            'dante': dante_yn,
+            'dante_lic': dante_lic,
+            'sslo': sslo_yn,
+            'sslo_lic': sslo_lic,
+            'general': general,
+            'replay': replay,
+            'studio': studio,
+            'review': review
+        }
 
+    def add(self, customer):
+        newcust = self.cust_rec(customer)
         customers = self.load_file()
         customers[customer] = newcust
         self.save_file(customers)
@@ -69,6 +74,15 @@ class VsgLicense:
         #TBD??
         return
 
+    def check_out(self, customer):
+        customer['in_use'] = 'Y'
+        self.update(customer)
+
+    def check_in(self, customer):
+        customer['in_use'] = 'N'
+        self.update(customer)
+
+
 def main():
     vsg = VsgLicense()
     #given a customer id and a "secret id", verify the customer then return the license info
@@ -85,6 +99,8 @@ def main():
     customer['dante_lic'] = '23452345'
     vsg.update(customer)
 
-    vsg.delete("9090")
+    vsg.check_out(customer)
+    vsg.check_in(customer)
+#    vsg.delete("9090")
 
 main()
