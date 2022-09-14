@@ -1,7 +1,6 @@
 from flask import Flask, request
 
-import WrapGnupg
-import checklicense
+import vsgLic2
 
 app = Flask(__name__)
 
@@ -9,64 +8,38 @@ app = Flask(__name__)
 def hello_world():
 	return 'Hello from Flask!'
 
-@app.route('/load/', methods = ['GET', 'POST'])
-def load():
-	checklicense.loadMyKeys()
-	return 'good!'
-
 @app.route('/reset/', methods = ['GET', 'POST'])
 def reset():
-	checklicense.resetMyKeys()
-	return 'good!'
+	return 'not implemented!'
 
-@app.route('/init-keys/', methods = ['GET', 'POST'])
-def init_keys():
-	WrapGnupg.main()
-	return 'good!'
+@app.route('/customer/', methods = ['GET', 'POST'])
+def customer():
+	key_id = request.args.get('key_id')
+	action = request.args.get('action')
+	pwd = request.args.get('action')
+	return 'not implemented!'
+
 
 @app.route('/key/', methods = ['GET', 'POST'])
 def checkout_keys():
-	my_key = request.args.get('key_id')
+	key_id = request.args.get('key_id')
 	action = request.args.get('action')
-#	my_val = validateMyKey(my_key)
-	if len(my_key) > 0:
+	pwd = request.args.get('action')
+	secret_key = request.args.get('secret')
+
+	vsg = VsgLicense()
+	if key_id:
+#	if len(key_id) > 0:
 		if action == 'checkout':
-			if checklicense.checkoutMyKey(my_key, 'checkout'):
+			if vsg.check_out(key_id):
 				return 'checked out!'
 		if action == 'checkin':
-			if checklicense.checkoutMyKey(my_key, 'checkin'):
+			if vsg.check_in(key_id):
 				return 'checked in!'
+		if action == 'validate':
+			if secret_key and vsg.validate(key_id, secret_key):
+				return 'valid!'
 	return 'not so good'
-
-@app.route('/keys/', methods = ['GET', 'POST', 'DELETE'])
-def key():
-	retStr = ''
-	if request.method == 'GET':
-		a_key = request.args.get('key_id')
-		my_val = checklicense.checkKey(a_key)
-		if my_val.ok:
-			retStr = 'VERIFIED'
-		else:
-			retStr =  'UNKNOWN'
-
-	elif request.method == 'POST':
-		a_key = request.form.get('key_id') # a multidict containing POST data
-		my_val = checklicense.checkKey(a_key)
-		if my_val.ok:
-			retStr = 'VERIFIED'
-		else:
-			retStr =  'UNKNOWN'
-
-	elif request.method == 'DELETE':
-		my_key = request.form.get('key_id')
-		if my_key:
-			retStr = 'delete key id '+my_key 
-
-	else:
-		retStr = 'error 405 method not allowed'
-		# POST Error 405 Method Not Allowed
-		
-	return retStr
 
 if __name__ == '__main__':
 	app.run()
