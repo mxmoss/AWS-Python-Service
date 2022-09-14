@@ -1,6 +1,6 @@
 from flask import Flask, request
 
-import vsgLic2
+from vsgLic2 import VsgLicense
 
 app = Flask(__name__)
 
@@ -24,8 +24,10 @@ def customer():
 def checkout_keys():
 	key_id = request.args.get('key_id')
 	action = request.args.get('action')
-	pwd = request.args.get('action')
+	pwd = request.args.get('pwd')
 	secret_key = request.args.get('secret')
+#	txt1 = "key_id {key_id}, action {action}, pwd {pwd}, secret_key {secret_key}".format(key_id = key_id, action = action, pwd = pwd, secret_key = secret_key)
+#	return txt1
 
 	vsg = VsgLicense()
 	if key_id:
