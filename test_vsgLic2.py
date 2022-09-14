@@ -21,16 +21,14 @@ class TestVsgLicense(TestCase):
     def test_validate(self):
         try:
             v = VsgLicense()
-            customers = v.load_file()
-            customer = v.get_customer("1234")
             # Should validate
-            if v.validate(customer, "9988"):
+            if not v.validate("5678", "9988"):
                 self.fail()
             # Should not validate
-            if v.validate(customer, "5678"):
+            if v.validate("5678", "5678"):
                 self.fail()
             # Should not validate
-            if v.validate(customer, ""):
+            if v.validate("5678", ""):
                 self.fail()
         except:
             self.fail()
