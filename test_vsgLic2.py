@@ -23,27 +23,33 @@ class TestVsgLicense(TestCase):
             v = VsgLicense()
             customers = v.load_file()
             customer = v.get_customer("1234")
-            #Should validate correctly
-            if not v.validate(customer, "5544"):
+            # Should validate
+            if v.validate(customer, "9988"):
                 self.fail()
-            #Should not validate correctly
-            if v.validate(customer, "1234"):
+            # Should not validate
+            if v.validate(customer, "5678"):
                 self.fail()
-            #Should not validate correctly
+            # Should not validate
             if v.validate(customer, ""):
                 self.fail()
         except:
             self.fail()
 
-    def test_add(self):
-        v = VsgLicense()
-        self.fail()
+    def test_CRUD(self):
+        try:
+            v = VsgLicense()
+            customers = v.load_file()
+            #Create
+            v.add("1234")
 
-    def test_update(self):
-        v = VsgLicense()
-        self.fail()
+            #Read
+            customer = v.get_customer("1234")
 
-    def test_delete(self):
-        v = VsgLicense()
-        self.fail()
+            #Update
+            customer['dante_lic'] = '23452345'
+            v.update(customer)
+
+            v.delete("1234")
+        except:
+            self.fail()
 
