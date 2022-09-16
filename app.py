@@ -4,42 +4,48 @@ from vsgLic2 import VsgLicense
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def hello_world():
-	return 'Hello from Flask!'
+    return 'Hello from Flask!'
 
-@app.route('/reset/', methods = ['GET', 'POST'])
+
+@app.route('/reset/', methods=['GET', 'POST'])
 def reset():
-	return 'not implemented!'
+    return 'not implemented!'
 
-@app.route('/customer/', methods = ['GET', 'POST'])
+
+@app.route('/customer/', methods=['GET', 'POST'])
 def customer():
-	key_id = request.args.get('key_id')
-	action = request.args.get('action')
-	pwd = request.args.get('action')
-	return 'not implemented!'
+    key_id = request.args.get('key_id')
+    action = request.args.get('action')
+    pwd = request.args.get('action')
+    return 'not implemented!'
 
 
-@app.route('/key/', methods = ['GET', 'POST'])
+@app.route('/key/', methods=['GET', 'POST'])
 def checkout_keys():
-	key_id = request.args.get('key_id')
-	action = request.args.get('action')
-	pwd = request.args.get('pwd')
-	secret_key = request.args.get('secret')
+    key_id = request.args.get('key_id')
+    action = request.args.get('action')
+    pwd = request.args.get('pwd')
+    secret_id = request.args.get('secret_id')
 
-	vsg = VsgLicense()
-	if key_id:
-#	if len(key_id) > 0:
-		if action == 'checkout':
-			if vsg.check_out(key_id):
-				return 'checked out!'
-		if action == 'checkin':
-			if vsg.check_in(key_id):
-				return 'checked in!'
-		if action == 'validate':
-			if secret_key and vsg.validate(key_id, secret_key):
-				return vsg.get_customer(key_id)[0]
-	return 'not so good'
+    vsg = VsgLicense()
+    if key_id:
+        #	if len(key_id) > 0:
+        if action == 'checkout':
+            if vsg.check_out(key_id):
+                return 'checked out!'
+        if action == 'checkin':
+            if vsg.check_in(key_id):
+                return 'checked in!'
+    if action == 'validate':
+        print('1')
+        if secret_id and vsg.validate(key_id, secret_id):
+            print('2')
+            return vsg.get_customer(key_id)[0]
+    return 'not so good'
+
 
 if __name__ == '__main__':
-	app.run()
+    app.run()
