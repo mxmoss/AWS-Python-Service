@@ -1,4 +1,6 @@
 from flask import Flask, request
+import json
+import sys
 
 from vsgLic2 import VsgLicense
 
@@ -22,7 +24,6 @@ def customer():
     pwd = request.args.get('action')
     return 'not implemented!'
 
-
 @app.route('/key/', methods=['GET', 'POST'])
 def checkout_keys():
     key_id = request.args.get('key_id')
@@ -39,13 +40,16 @@ def checkout_keys():
         if action == 'checkin':
             if vsg.check_in(key_id):
                 return 'checked in!'
-    if action == 'validate':
-        print('1')
-        if secret_id and vsg.validate(key_id, secret_id):
-            print('2')
-            return vsg.get_customer(key_id)[0]
+        if action == 'validate':
+            return vsg.load_file()
+#            if secret_id and vsg.validate(key_id, secret_id):
+#               return json.dumps(vsg.get_customer(key_id)[0])
     return 'not so good'
 
+@app.after_request
+def add_header(response):
+    response.cache_control.max_age = 5
+    return response
 
 if __name__ == '__main__':
     app.run()
