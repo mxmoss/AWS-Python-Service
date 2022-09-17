@@ -8,7 +8,7 @@ class VsgLicense:
     def data_dir(self):
         if sys.platform == 'linux':
             return sys.path[0]+'/'
-        return sys.path[1]+'\\'
+        return sys.path[0]+'\\'
 
     def load_file(self):
         with open(self.data_dir()+'custs.json') as json_file:
