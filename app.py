@@ -1,6 +1,4 @@
 from flask import Flask, request
-import json
-import sys
 
 from vsgLic2 import VsgLicense
 
@@ -41,9 +39,8 @@ def checkout_keys():
             if vsg.check_in(key_id):
                 return 'checked in!'
         if action == 'validate':
-            return vsg.load_file()
-#            if secret_id and vsg.validate(key_id, secret_id):
-#               return json.dumps(vsg.get_customer(key_id)[0])
+            if secret_id and vsg.validate(key_id, secret_id):
+               return vsg.get_customer(key_id)[0]
     return 'not so good'
 
 @app.after_request
