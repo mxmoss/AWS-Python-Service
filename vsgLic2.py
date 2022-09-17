@@ -1,24 +1,27 @@
 import json
+import sys
 
 class VsgLicense:
 #    def __init__(self, sn):
 #           self.sn = sn
 
-    @staticmethod
-    def load_file():
-        with open('custs.json') as json_file:
+    def data_dir(self):
+        if sys.platform == 'linux':
+            return sys.path[0]+'/'
+        return sys.path[1]+'\\'
+
+    def load_file(self):
+        with open(self.data_dir()+'custs.json') as json_file:
             return json.load(json_file)
 
-    @staticmethod
-    def save_file(customers):
-        with open('custs.json', 'w') as f:
+    def save_file(self, customers):
+        with open(self.data_dir()+'custs.json', 'w') as f:
             json.dump(customers, f)
         return customers
 
-    @staticmethod
-    def get_customer( customer_id):
+    def get_customer(self, customer_id):
         # Search for customer
-        with open('custs.json') as json_file:
+        with open(self.data_dir()+'custs.json') as json_file:
             customers = json.load(json_file)
             customer = customers.get(customer_id)
             if customer:
