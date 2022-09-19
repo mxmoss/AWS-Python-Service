@@ -55,10 +55,9 @@ class VsgLicense:
             'review': review
         }
 
-    def add(self, customer):
-        newcust = self.cust_rec(cust_id = customer)
+    def add(self, customer_id, custinfo):
         customers = self.load_file()
-        customers[customer] = newcust
+        customers[customer_id] = custinfo
         self.save_file(customers)
         return customers
 
