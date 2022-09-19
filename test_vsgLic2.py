@@ -38,7 +38,7 @@ class TestVsgLicense(TestCase):
             v = VsgLicense()
             customers = v.load_file()
             #Create
-            v.add("1234")
+            v.add("1234", v.cust_rec("1234", "4567"))
 
             #Read
             customer = v.get_customer("1234")
