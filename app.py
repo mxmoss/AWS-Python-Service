@@ -67,7 +67,7 @@ def checkout_keys():
                 return 'checked in!'
         if action == 'validate':
             if secret_id and vsg.validate(key_id, secret_id):
-               return vsg.get_customer(key_id)[0]
+               return vsg.get_customer(key_id)
     return 'not so good'
 
 @app.after_request
