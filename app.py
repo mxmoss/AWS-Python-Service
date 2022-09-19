@@ -46,7 +46,7 @@ def customer():
                 return vsg.update(customer)
         if action == 'delete':
             if vsg.validate(key_id, secret_id):
-                return vsg.delete(customer)
+                return vsg.delete(key_id)
     return 'not so good'
 
 @app.route('/key/', methods=['GET', 'POST'])
