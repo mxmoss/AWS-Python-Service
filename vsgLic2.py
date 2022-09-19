@@ -29,7 +29,7 @@ class VsgLicense:
             return []
 
     def validate(self, customer_id, secret_id):
-        customer = self.get_customer(customer_id)[0]
+        customer = self.get_customer(customer_id)
         if customer and customer['secret_id'] == secret_id:
             return True
         return False
