@@ -19,8 +19,35 @@ def reset():
 def customer():
     key_id = request.args.get('key_id')
     action = request.args.get('action')
-    pwd = request.args.get('action')
-    return 'not implemented!'
+    pwd = request.args.get('pwd')
+    secret_id = request.args.get('secret_id')
+
+    ver = request.args.get('ver')
+    lease = request.args.get('lease')
+    temp = request.args.get('temp')
+    dante = request.args.get('dante')
+    dante_lic = request.args.get('dante_lic')
+    sslo = request.args.get('sslo')
+    sslo_lic = request.args.get('sslo_lic')
+    general = request.args.get('general')
+    replay = request.args.get('replay')
+    studio = request.args.get('studio')
+    review = request.args.get('review')
+
+    vsg = VsgLicense()
+    customer = vsg.cust_rec(key_id, secret_id, ver,
+                        lease, temp, dante, dante_lic, sslo, sslo_lic,
+                        general, replay, studio, review)
+    if key_id:
+        if action == 'add':
+            return vsg.add(key_id, customer)
+        if action == 'update':
+            if vsg.validate(key_id, secret_id):
+                return vsg.update(customer)
+        if action == 'delete':
+            if vsg.validate(key_id, secret_id):
+                return vsg.delete(customer)
+    return 'not so good'
 
 @app.route('/key/', methods=['GET', 'POST'])
 def checkout_keys():
