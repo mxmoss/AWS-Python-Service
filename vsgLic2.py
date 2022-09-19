@@ -59,17 +59,17 @@ class VsgLicense:
         customers = self.load_file()
         customers[customer_id] = custinfo
         self.save_file(customers)
-        return customers
+        return customers[customer_id]
 
     def update(self, customer):
         customers = self.load_file()
         customers[customer['sn']] = customer
         self.save_file(customers)
-        return customers
+        return customers[customer['sn']]
 
-    def delete(self, customer):
+    def delete(self, customer_id):
         customers = self.load_file()
-        customers.pop(customer)
+        customers.pop(customer_id)
         self.save_file(customers)
         return customers
 
