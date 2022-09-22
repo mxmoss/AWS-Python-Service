@@ -59,6 +59,8 @@ def checkout_keys():
     vsg = VsgLicense()
     if key_id:
         #	if len(key_id) > 0:
+        if action == 'get':
+            return vsg.get_customer(key_id)
         if action == 'checkout':
             if vsg.check_out(key_id):
                 return 'checked out!'
