@@ -9,6 +9,10 @@ app = Flask(__name__)
 def hello_world():
     return 'Hello from Flask!'
 
+@app.route('/smoke')
+def smoke_test():
+    return 'It works!'
+
 
 @app.route('/reset/', methods=['GET', 'POST'])
 def reset():
