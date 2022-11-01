@@ -1,0 +1,14 @@
+#Edit /etc/apache2/sites-enabled/000-default.conf
+#put this section immediately after DocumentRoot
+
+WSGIDaemonProcess flaskapp threads=5
+WSGIScriptAlias / /var/www/html/flaskapp/flask.wsgi
+
+<Directory flaskapp>
+    WSGIProcessGroup app
+    WSGIApplicationGroup %{GLOBAL}
+    Order deny,allow
+    Allow from all
+</Directory>
+
+
